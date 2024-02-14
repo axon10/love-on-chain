@@ -2,12 +2,19 @@
 pragma solidity ^0.8.0;
 
 contract DateVerificationEscrow {
-    address public participant1;
-    address public participant2;
-    uint256 public stakeAmount = 5;
-    bool public participant1Confirmed = false;
-    bool public participant2Confirmed = false;
-    mapping(address => uint256) public stakes;
+
+    uint256 public stakeAmount = 1;
+
+    struct Date {
+        address participant1;
+        address participant2;
+        bool participant1Staked;
+        bool participant2Staked;
+        bool participant1Confirmed;
+        bool participant2Confirmed;
+    }
+
+    mapping(string => Date) public dates;
 
     // Event declarations for logging actions
     event StakeMade(address participant, uint256 amount);
@@ -15,39 +22,55 @@ contract DateVerificationEscrow {
     event FundsReleased(address participant1, address participant2, uint256 amount);
 
     // Constructor to initialize participants and stake amount
-    constructor(address _participant1, address _participant2) {
-        participant1 = _participant1;
-        participant2 = _participant2;
+    constructor() {}
+
+    function initDate(string memory dateId, address participant1, address participant2) external {
+        dates[dateId] = Date({
+            participant1: participant1, 
+            participant2: participant2, 
+            participant1Staked: false, 
+            participant2Staked: false, 
+            participant1Confirmed: false, 
+            participant2Confirmed: false});
     }
 
     // Allow participants to stake ETH
-    function stake() external payable {
-        require(msg.sender == participant1 || msg.sender == participant2, "Not a participant");
-        require(msg.value == stakeAmount, "Incorrect stake amount");
-        require(stakes[msg.sender] == 0, "Stake already made");
+    function stake(string memory dateId) external payable {
+        Date memory curr_date = dates[dateId];
+        require(msg.sender == curr_date.participant1 || msg.sender == curr_date.participant2, "Not a participant");
+        require(msg.value >= stakeAmount, "Not enough stake amount");
+        if (msg.sender == curr_date.participant1) {
+            require(curr_date.participant1Staked == false, "Stake already made");
+            curr_date.participant1Staked == true;
+        } else if (msg.sender == curr_date.participant1) {
+            require(curr_date.participant1Staked == false, "Stake already made");
+            curr_date.participant1Staked == true;
+        }
 
-        stakes[msg.sender] = msg.value;
         emit StakeMade(msg.sender, msg.value); // Log the staking event
     }
 
     // Participants confirm the date
-    function confirmAttendance() external {
-        require(msg.sender == participant1 || msg.sender == participant2, "Not a participant");
-        require(stakes[msg.sender] == stakeAmount, "Stake not made");
+    function confirmAttendance(string memory dateId) external {
+        Date memory curr_date = dates[dateId];
+        require(msg.sender == curr_date.participant1 || msg.sender == curr_date.participant2, "Not a participant");        
 
-        if (msg.sender == participant1) {
-            participant1Confirmed = true;
-            emit AttendanceConfirmed(participant1); // Log confirmation
-        } else if (msg.sender == participant2) {
-            participant2Confirmed = true;
-            emit AttendanceConfirmed(participant2); // Log confirmation
+        if (msg.sender == curr_date.participant1) {
+            require(curr_date.participant1Staked == true, "Stake not already made");
+            curr_date.participant1Confirmed = true;
+            emit AttendanceConfirmed(curr_date.participant1); // Log confirmation
+        } else if (msg.sender == curr_date.participant2) {
+            require(curr_date.participant1Staked == true, "Stake not already made");
+            curr_date.participant2Confirmed = true;
+            emit AttendanceConfirmed(curr_date.participant2); // Log confirmation
         }
 
-        if (participant1Confirmed && participant2Confirmed) {
+        if (curr_date.participant1Confirmed && curr_date.participant2Confirmed) {
             // Release funds from escrow (the contract itself) back to both participants
-            payable(participant1).transfer(stakeAmount);
-            payable(participant2).transfer(stakeAmount);
-            emit FundsReleased(participant1, participant2, stakeAmount); // Log the release of funds
+            payable(curr_date.participant1).transfer(stakeAmount);
+            payable(curr_date.participant2).transfer(stakeAmount);
+            emit FundsReleased(curr_date.participant1, curr_date.participant2, stakeAmount); // Log the release of funds
+            delete dates[dateId];
         }
     }
 
