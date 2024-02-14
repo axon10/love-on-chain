@@ -73,6 +73,7 @@ export function NavbarTitle() {
 export function NavbarExperiencesList() {
   return (
     <>
+      <ListItem href="/love-on-chain">Love On Chain</ListItem>
       <ListItem href="/buy-me-coffee">Buy Me Coffee</ListItem>
       <ListItem href="/mint">Mint NFT</ListItem>
     </>

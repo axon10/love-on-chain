@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Menu from './Menu';
+import HorizontalLine from '../horizontal-line/HorizontalLine';
 
 export type HeaderProps = {
   ghost?: boolean;
@@ -32,7 +32,7 @@ function Header({ ghost }: HeaderProps) {
 
   return (
     <header data-scroll-state={scrollState} className="flex h-[120px] justify-center pt-8">
-      <Menu />
+      <h1 className='text-5xl font-mono font-bold'>Love On Chain</h1>
     </header>
   );
 }
