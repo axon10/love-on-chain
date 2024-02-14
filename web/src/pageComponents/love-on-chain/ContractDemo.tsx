@@ -20,7 +20,7 @@ export default function LoveOnChainContractDemo() {
 
   const dateDetails = useMemo(() => {
     return (
-      <div>
+      <div className='flex flex-col gap-1'>
         {MATCHES.map((user) => (
             <MatchProfile key={user.userName} userName={user.userName} bio={user.bio} avatar={user.avatar} selected={selectedMatch === user.userName} clickHandler={onSelectMatch}/>
         )) 
@@ -33,6 +33,7 @@ export default function LoveOnChainContractDemo() {
     <div>
       <Profile/>
       <section>
+        <h3 className="text-xl font-bold">My matches</h3>
           {dateDetails}
       </section>
     </div>
