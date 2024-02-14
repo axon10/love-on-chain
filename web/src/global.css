@@ -12,15 +12,16 @@
   --palette-bg-black: #0a0b0d;
   --palette-bg-soft-black: #141519;
   --palette-bg-white: #fff;
+  --palette-bg-pink: #fce9e6;
 
   /* Build Onchain Apps shared variables */
-  --boat-color-background: var(--palette-bg-black);
-  --boat-color-text: var(--palette-bg-white);
+  --background: var(--palette-bg-pink);
+  --body-text-color: var(--palette-bg-black);
 
   /* Indicates that the element can be rendered using 
    * the operating system dark color scheme. 
    * https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *,
@@ -42,10 +43,19 @@ html .font-inter {
   font-family: var(--font-inter);
 }
 
+.title {
+  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+  font-family: "Courier New" "monospace" "sans-serif";
+}
+
+.round{
+  border-radius: 50%;
+}
+
 body {
   height: 100%;
   margin: 0;
-  background-color: var(--boat-color-background);
+  background-color: var(--background);
   color: var(--boat-color-text);
   font-family: Inter, sans-serif;
   overflow-x: hidden;

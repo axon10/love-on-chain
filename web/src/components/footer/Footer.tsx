@@ -69,6 +69,11 @@ export default function Footer() {
 
           <div className="font-robotoMono flex flex-col items-start justify-center gap-4 text-center text-xl font-medium text-white">
             EXPERIENCES
+            <NavbarLink href="/love-on-chain">
+              <span className="flex items-center gap-1 px-2">
+               Love On Chain <ArrowTopRightIcon width="16" height="16" />
+              </span>
+            </NavbarLink>
             <NavbarLink href="/buy-me-coffee">
               <span className="flex items-center gap-1 px-2">
                 Buy Me Coffee <ArrowTopRightIcon width="16" height="16" />

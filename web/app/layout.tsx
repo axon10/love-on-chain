@@ -43,7 +43,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${roboto.variable} ${inter.variable}`}>
       <body className="flex flex-1 flex-col">
         <OnchainProviders>{children}</OnchainProviders>
-        <Footer />
       </body>
       <GoogleAnalytics />
     </html>
