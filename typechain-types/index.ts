@@ -2,5 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { DateVerificationEscrow } from "./DateVerificationEscrow";
+export type { Staker } from "./Staker";
 export * as factories from "./factories";
 export { DateVerificationEscrow__factory } from "./factories/DateVerificationEscrow__factory";
+export { Staker__factory } from "./factories/Staker__factory";

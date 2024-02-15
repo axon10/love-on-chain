@@ -17,23 +17,41 @@ declare module "hardhat/types/runtime" {
       name: "DateVerificationEscrow",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.DateVerificationEscrow__factory>;
+    getContractFactory(
+      name: "Staker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Staker__factory>;
 
     getContractAt(
       name: "DateVerificationEscrow",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.DateVerificationEscrow>;
+    getContractAt(
+      name: "Staker",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Staker>;
 
     deployContract(
       name: "DateVerificationEscrow",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.DateVerificationEscrow>;
+    deployContract(
+      name: "Staker",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Staker>;
 
     deployContract(
       name: "DateVerificationEscrow",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.DateVerificationEscrow>;
+    deployContract(
+      name: "Staker",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Staker>;
 
     // default types
     getContractFactory(

@@ -5,6 +5,7 @@ import "hardhat/console.sol";
 contract DateVerificationEscrow {
 
     uint256 stakeAmount = 100;
+    address stakerAddress;
 
     struct Date {
         address participant1;
@@ -24,15 +25,17 @@ contract DateVerificationEscrow {
     event FundsReleased(address participant1, address participant2, uint256 amount);
 
     // Constructor to initialize participants and stake amount
-    constructor() {}
+    constructor(address _stakerAddress) {
+        stakerAddress = _stakerAddress;
+    }
 
     function initDate(string memory dateId, address participant1, address participant2) external {
         dates[dateId] = Date({
-            participant1: participant1, 
-            participant2: participant2, 
-            participant1Staked: false, 
-            participant2Staked: false, 
-            participant1Confirmed: false, 
+            participant1: participant1,
+            participant2: participant2,
+            participant1Staked: false,
+            participant2Staked: false,
+            participant1Confirmed: false,
             participant2Confirmed: false});
 
         emit DateMade(participant1, participant2);
@@ -47,6 +50,7 @@ contract DateVerificationEscrow {
         Date storage curr_date = dates[dateId];
         require(sender == curr_date.participant1 || sender == curr_date.participant2, "Not a participant");
         require(value >= stakeAmount, "Not enough stake amount");
+        Staker staker = Staker(stakerAddress);
         if (sender == curr_date.participant1) {
             require(curr_date.participant1Staked == false, "Stake already made");
             curr_date.participant1Staked = true;
@@ -54,6 +58,7 @@ contract DateVerificationEscrow {
             require(curr_date.participant2Staked == false, "Stake already made");
             curr_date.participant2Staked = true;
         }
+        staker.stake{value: 2 * stakeAmount}();
         emit StakeMade(msg.sender, stakeAmount); // Log the staking event
     }
 
@@ -64,7 +69,7 @@ contract DateVerificationEscrow {
 
     function confirmAttendanceInt(string memory dateId, address sender) public {
         Date storage curr_date = dates[dateId];
-        require(sender == curr_date.participant1 || sender == curr_date.participant2, "Not a participant");        
+        require(sender == curr_date.participant1 || sender == curr_date.participant2, "Not a participant");
 
         if (sender == curr_date.participant1) {
             require(curr_date.participant1Staked, "Stake not already made");
@@ -78,7 +83,9 @@ contract DateVerificationEscrow {
 
         if (curr_date.participant1Confirmed && curr_date.participant2Confirmed) {
             // Release funds from escrow (the contract itself) back to both participants
-            
+            Staker staker = Staker(stakerAddress);
+            staker.funstake();
+
             payable(curr_date.participant1).transfer(stakeAmount);
             payable(curr_date.participant2).transfer(stakeAmount);
             emit FundsReleased(curr_date.participant1, curr_date.participant2, stakeAmount); // Log the release of funds
@@ -86,10 +93,34 @@ contract DateVerificationEscrow {
         }
     }
 
+    fallback() external payable {
+        // Do nothing
+    }
+
+    receive() external payable {
+        // Do nothing
+    }
+
     // Add functions for dispute resolution or timeouts if needed
     // For instance, a timeout function that allows withdrawal of stakes after a certain period
     // if one of the participants fails to confirm attendance.
-    // TODO: write unit tests
-    // TODO: money laundering
     // TODO: deploy
+}
+
+contract Staker {
+
+    mapping(address => uint256) stakes;
+
+    constructor() { }
+
+    function stake() external payable{
+        stakes[msg.sender] = msg.value;
+    }
+
+    function funstake() external {
+        uint256 amount = stakes[msg.sender] * 2;
+        require(amount > 0, "No stake to withdraw");
+        stakes[msg.sender] = 0;
+        payable(msg.sender).transfer(2 * amount);
+    }
 }

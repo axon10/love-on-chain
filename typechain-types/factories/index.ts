@@ -2,3 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export { DateVerificationEscrow__factory } from "./DateVerificationEscrow__factory";
+export { Staker__factory } from "./Staker__factory";
