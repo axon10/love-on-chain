@@ -11,7 +11,8 @@ describe("smart contract", function () {
     const Staker = await ethers.getContractFactory("Staker");
     var staker = await Staker.deploy();
     const stakerAddress = await staker.getAddress();
-    var escrow = await DateVerificationEscrow.deploy(stakerAddress);
+    var escrow = await DateVerificationEscrow.deploy();
+    await escrow.launch(stakerAddress);
 
     const deployedAddress = await escrow.getAddress();
     const all_signers = await ethers.getSigners();

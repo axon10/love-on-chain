@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/gvelchuru/src/love-on-chain/contracts/contract.sol": {
-      "lastModificationDate": 1707971300484,
-      "contentHash": "ede2ecfeed0147373e7c4fc90c576275",
+      "lastModificationDate": 1707973462970,
+      "contentHash": "6fc821ef6aa7adf8edbe460e8ae5b70d",
       "sourceName": "contracts/contract.sol",
       "solcConfig": {
         "version": "0.8.24",

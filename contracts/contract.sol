@@ -25,7 +25,9 @@ contract DateVerificationEscrow {
     event FundsReleased(address participant1, address participant2, uint256 amount);
 
     // Constructor to initialize participants and stake amount
-    constructor(address _stakerAddress) {
+    constructor() {}
+
+    function launch(address _stakerAddress) external {
         stakerAddress = _stakerAddress;
     }
 

@@ -30,6 +30,7 @@ export interface DateVerificationEscrowInterface extends Interface {
       | "confirmAttendanceInt"
       | "dates"
       | "initDate"
+      | "launch"
       | "stake"
       | "stakeInt"
   ): FunctionFragment;
@@ -55,6 +56,7 @@ export interface DateVerificationEscrowInterface extends Interface {
     functionFragment: "initDate",
     values: [string, AddressLike, AddressLike]
   ): string;
+  encodeFunctionData(functionFragment: "launch", values: [AddressLike]): string;
   encodeFunctionData(functionFragment: "stake", values: [string]): string;
   encodeFunctionData(
     functionFragment: "stakeInt",
@@ -71,6 +73,7 @@ export interface DateVerificationEscrowInterface extends Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "dates", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "initDate", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "launch", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeInt", data: BytesLike): Result;
 }
@@ -214,6 +217,12 @@ export interface DateVerificationEscrow extends BaseContract {
     "nonpayable"
   >;
 
+  launch: TypedContractMethod<
+    [_stakerAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   stake: TypedContractMethod<[dateId: string], [void], "payable">;
 
   stakeInt: TypedContractMethod<
@@ -259,6 +268,9 @@ export interface DateVerificationEscrow extends BaseContract {
     [void],
     "nonpayable"
   >;
+  getFunction(
+    nameOrSignature: "launch"
+  ): TypedContractMethod<[_stakerAddress: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "stake"
   ): TypedContractMethod<[dateId: string], [void], "payable">;
