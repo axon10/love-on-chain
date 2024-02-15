@@ -81,6 +81,10 @@ const abi = [
 		"type": "event"
 	},
 	{
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -89,6 +93,24 @@ const abi = [
 			}
 		],
 		"name": "confirmAttendance",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "dateId",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "confirmAttendanceInt",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -163,6 +185,19 @@ const abi = [
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "_stakerAddress",
+				"type": "address"
+			}
+		],
+		"name": "launch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "string",
 				"name": "dateId",
 				"type": "string"
@@ -172,6 +207,33 @@ const abi = [
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "dateId",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "stakeInt",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	}
 ] as const;
 
