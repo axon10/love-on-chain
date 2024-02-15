@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
-<<<<<<< HEAD
-=======
 import "hardhat/console.sol";
->>>>>>> 7dda88ac (add hardhat test)
 
 contract DateVerificationEscrow {
 
@@ -43,34 +40,19 @@ contract DateVerificationEscrow {
 
     // Allow participants to stake ETH
     function stake(string memory dateId) external payable{
-<<<<<<< HEAD
-        stake(dateId, msg.sender, msg.value);
-    }
-
-    function stake(string memory dateId, address sender, uint value) private  {
-        Date memory curr_date = dates[dateId];
-=======
         stakeInt(dateId, msg.sender, msg.value);
     }
 
     function stakeInt(string memory dateId, address sender, uint value) public payable  {
         Date storage curr_date = dates[dateId];
->>>>>>> 7dda88ac (add hardhat test)
         require(sender == curr_date.participant1 || sender == curr_date.participant2, "Not a participant");
         require(value >= stakeAmount, "Not enough stake amount");
         if (sender == curr_date.participant1) {
             require(curr_date.participant1Staked == false, "Stake already made");
-<<<<<<< HEAD
-            curr_date.participant1Staked == true;
-        } else if (sender == curr_date.participant2) {
-            require(curr_date.participant2Staked == false, "Stake already made");
-            curr_date.participant2Staked == true;
-=======
             curr_date.participant1Staked = true;
         } else if (sender == curr_date.participant2) {
             require(curr_date.participant2Staked == false, "Stake already made");
             curr_date.participant2Staked = true;
->>>>>>> 7dda88ac (add hardhat test)
         }
         emit StakeMade(msg.sender, stakeAmount); // Log the staking event
     }

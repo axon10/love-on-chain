@@ -2,13 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/gvelchuru/src/love-on-chain/contracts/contract.sol": {
-<<<<<<< HEAD
-      "lastModificationDate": 1707957756912,
-      "contentHash": "e4eb9ea3193d74343e69749dcf9086bf",
-=======
-      "lastModificationDate": 1707964150092,
+      "lastModificationDate": 1707966776232,
       "contentHash": "003efef1b0860410f4b020b759bffb21",
->>>>>>> 7dda88ac (add hardhat test)
       "sourceName": "contracts/contract.sol",
       "solcConfig": {
         "version": "0.8.24",
@@ -34,14 +29,6 @@
           }
         }
       },
-<<<<<<< HEAD
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.24"
-      ],
-      "artifacts": [
-        "DateVerificationEscrow"
-=======
       "imports": [
         "hardhat/console.sol"
       ],
@@ -53,7 +40,7 @@
       ]
     },
     "/Users/gvelchuru/src/love-on-chain/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1707958858243,
+      "lastModificationDate": 1707965537980,
       "contentHash": "896f68942c3a20e9ae3c3c5bfd3add54",
       "sourceName": "hardhat/console.sol",
       "solcConfig": {
@@ -86,7 +73,6 @@
       ],
       "artifacts": [
         "console"
->>>>>>> 7dda88ac (add hardhat test)
       ]
     }
   }

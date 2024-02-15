@@ -25,9 +25,6 @@ import type {
 
 export interface DateVerificationEscrowInterface extends Interface {
   getFunction(
-<<<<<<< HEAD
-    nameOrSignature: "confirmAttendance" | "dates" | "initDate" | "stake"
-=======
     nameOrSignature:
       | "confirmAttendance"
       | "confirmAttendanceInt"
@@ -35,7 +32,6 @@ export interface DateVerificationEscrowInterface extends Interface {
       | "initDate"
       | "stake"
       | "stakeInt"
->>>>>>> 7dda88ac (add hardhat test)
   ): FunctionFragment;
 
   getEvent(
@@ -50,36 +46,25 @@ export interface DateVerificationEscrowInterface extends Interface {
     functionFragment: "confirmAttendance",
     values: [string]
   ): string;
-<<<<<<< HEAD
-=======
   encodeFunctionData(
     functionFragment: "confirmAttendanceInt",
     values: [string, AddressLike]
   ): string;
->>>>>>> 7dda88ac (add hardhat test)
   encodeFunctionData(functionFragment: "dates", values: [string]): string;
   encodeFunctionData(
     functionFragment: "initDate",
     values: [string, AddressLike, AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [string]): string;
-<<<<<<< HEAD
-=======
   encodeFunctionData(
     functionFragment: "stakeInt",
     values: [string, AddressLike, BigNumberish]
   ): string;
->>>>>>> 7dda88ac (add hardhat test)
 
   decodeFunctionResult(
     functionFragment: "confirmAttendance",
     data: BytesLike
   ): Result;
-<<<<<<< HEAD
-  decodeFunctionResult(functionFragment: "dates", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "initDate", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
-=======
   decodeFunctionResult(
     functionFragment: "confirmAttendanceInt",
     data: BytesLike
@@ -88,7 +73,6 @@ export interface DateVerificationEscrowInterface extends Interface {
   decodeFunctionResult(functionFragment: "initDate", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stakeInt", data: BytesLike): Result;
->>>>>>> 7dda88ac (add hardhat test)
 }
 
 export namespace AttendanceConfirmedEvent {
@@ -203,15 +187,12 @@ export interface DateVerificationEscrow extends BaseContract {
     "nonpayable"
   >;
 
-<<<<<<< HEAD
-=======
   confirmAttendanceInt: TypedContractMethod<
     [dateId: string, sender: AddressLike],
     [void],
     "nonpayable"
   >;
 
->>>>>>> 7dda88ac (add hardhat test)
   dates: TypedContractMethod<
     [arg0: string],
     [
@@ -235,15 +216,12 @@ export interface DateVerificationEscrow extends BaseContract {
 
   stake: TypedContractMethod<[dateId: string], [void], "payable">;
 
-<<<<<<< HEAD
-=======
   stakeInt: TypedContractMethod<
     [dateId: string, sender: AddressLike, value: BigNumberish],
     [void],
     "payable"
   >;
 
->>>>>>> 7dda88ac (add hardhat test)
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -252,8 +230,6 @@ export interface DateVerificationEscrow extends BaseContract {
     nameOrSignature: "confirmAttendance"
   ): TypedContractMethod<[dateId: string], [void], "nonpayable">;
   getFunction(
-<<<<<<< HEAD
-=======
     nameOrSignature: "confirmAttendanceInt"
   ): TypedContractMethod<
     [dateId: string, sender: AddressLike],
@@ -261,7 +237,6 @@ export interface DateVerificationEscrow extends BaseContract {
     "nonpayable"
   >;
   getFunction(
->>>>>>> 7dda88ac (add hardhat test)
     nameOrSignature: "dates"
   ): TypedContractMethod<
     [arg0: string],
@@ -287,8 +262,6 @@ export interface DateVerificationEscrow extends BaseContract {
   getFunction(
     nameOrSignature: "stake"
   ): TypedContractMethod<[dateId: string], [void], "payable">;
-<<<<<<< HEAD
-=======
   getFunction(
     nameOrSignature: "stakeInt"
   ): TypedContractMethod<
@@ -296,7 +269,6 @@ export interface DateVerificationEscrow extends BaseContract {
     [void],
     "payable"
   >;
->>>>>>> 7dda88ac (add hardhat test)
 
   getEvent(
     key: "AttendanceConfirmed"

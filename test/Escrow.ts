@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import {
-  time,
-  loadFixture,
-} from "@nomicfoundation/hardhat-toolbox/network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
-import { expect } from "chai";
-import { ethers } from "hardhat";
-
-describe("DateVerificationEscrow", function () {
-=======
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 import { parseEther, parseUnits} from "ethers";
@@ -49,5 +38,4 @@ describe("smart contract", function () {
       escrow.confirmAttendanceInt("anika-ana", ana.address)
     ).to.emit(escrow, "AttendanceConfirmed");
   });
->>>>>>> 7dda88ac (add hardhat test)
 });
