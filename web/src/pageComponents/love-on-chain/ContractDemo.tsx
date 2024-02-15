@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
+import AccountConnect from '../../components/header/AccountConnect';
 import { INVITES } from '../../mocks/userMocks';
 import { Invite } from '../../types';
 import MatchProfile from '../love-on-chain/MatchProfile';
@@ -34,9 +35,10 @@ export default function LoveOnChainContractDemo() {
       </div>
     );
   }, [selectedInvite, onSelectMatch]);
-  
+
   return (
     <div>
+      <AccountConnect/>
       <Profile/>
       <div className='flex flex-row gap-10'>
         <aside className='bg-white p-3 rounded-xl'>

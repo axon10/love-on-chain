@@ -12,6 +12,7 @@ import { TransactionSteps } from '../../ContractDemo';
 import OutOfGasStep from '../OutOfGasStep';
 import StartTransactionStep from '../StartTransactionStep';
 import TransactionCompleteStep from '../TransactionCompleteStep';
+//import { useWaitForTransactionReceipt  } from 'wagmi';
 
 type FormCommitToDateProps = {
   setTransactionStep: React.Dispatch<React.SetStateAction<TransactionSteps | null>>;
@@ -44,7 +45,7 @@ function FormCommitToDate({
 
   // Wagmi Write call
   const { data: loveOnChainData } = useSimulateContract({
-    address: contract.status === 'ready' ? contract.address : undefined,
+    address: '0x78Ef597C52805CD940F8b90C75e94982635C4e6E',
     abi: contract.abi,
     functionName: 'stake',
     args: [dateId],
@@ -57,7 +58,6 @@ function FormCommitToDate({
   const {
     writeContract: loveOnChain,
     data: dataLoveOnChain,
-    status: statusBuyMeACoffee,
     error: errorLoveOnChain,
   } = useWriteContract();
 
@@ -95,23 +95,52 @@ function FormCommitToDate({
     transactionStatus,
   ]);
 
+  const {writeContract} = useWriteContract(); 
+
   const handleSubmit = useCallback(
     (event: { preventDefault: () => void }) => {
       event.preventDefault();
-      if (loveOnChainData?.request) {
-        loveOnChain?.(loveOnChainData?.request);
-        setTransactionStep(TransactionSteps.START_TRANSACTION_STEP);
-        setDataHash(dataLoveOnChain);
-      } else {
-        setTransactionStep(null);
-      }
-    },
-    [loveOnChainData?.request, loveOnChain, dataLoveOnChain, setTransactionStep],
-  );
+        console.log('Commiting');
+        writeContract({
+          address: '0x5271F6dfE8080c1dc6E110E83D8687b54fAf1f9c',
+          abi: contract.abi,
+          functionName: 'initDate',
+          args: [
+              'anika-ana',
+              '0x4046aF2e421651CFd6080B85A96d200be91C676B',
+              '0xBa6618c6E109cA31F7E22e80557117f9813D5b49'
+          ]
+        });
 
-  const formDisabled = useMemo(() => {
-    return contract.status !== 'ready' || statusBuyMeACoffee === 'pending' || !canAfford;
-  }, [canAfford, contract.status, statusBuyMeACoffee]);
+        writeContract({
+          address: '0x5271F6dfE8080c1dc6E110E83D8687b54fAf1f9c',
+          abi: contract.abi,
+          functionName: 'stake',
+          args: [
+              'anika-ana',
+          ]
+        });
+
+        writeContract({
+          address: '0x5271F6dfE8080c1dc6E110E83D8687b54fAf1f9c',
+          abi: contract.abi,
+          functionName: 'stakeInt',
+          args: [
+              'anika-ana',
+              '0xBa6618c6E109cA31F7E22e80557117f9813D5b49',
+              BigInt(100),
+          ]
+        });
+        //loveOnChain?.(loveOnChainData?.request);
+        //setTransactionStep(TransactionSteps.TRANSACTION_COMPLETE_STEP);
+        //setDataHash(dataLoveOnChain);
+
+        //const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({
+        //  dataHash,
+        //})
+    },
+    [writeContract, loveOnChainData?.request, loveOnChain, dataLoveOnChain, setTransactionStep, contract.abi],
+  );
 
   const submitButtonContent = useMemo(() => {
     return (
@@ -175,7 +204,7 @@ function FormCommitToDate({
                 </div>
               ) : null}
 
-              <Button buttonContent={submitButtonContent} type="submit" disabled={formDisabled} />
+              <Button buttonContent={submitButtonContent} type="submit" onClick={handleSubmit} />
           </form>
         </>
       )}
