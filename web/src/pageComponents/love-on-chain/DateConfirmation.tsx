@@ -26,7 +26,7 @@ export default function DateConfirmation({dateInvite}: DateConfirmationProps) {
             <div className="ml-2 m-1">
                 <p>Date: {dateInvite.date}</p>
                 <p>Time: {dateInvite.time}</p>
-                <p>Time: {dateInvite.location}</p>
+                <p>Location: {dateInvite.location}</p>
             </div>
             <CommitToDateFormStep
             dateId={dateInvite.inviter.userName + "-" + CURR_USER.userName}
