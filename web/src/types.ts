@@ -8,3 +8,16 @@ export type CoffeeMemo = {
   time: bigint;
   twitterHandle?: string;
 };
+
+export type User = {
+  avatar: string;
+  userName: string;
+  bio: string;
+}
+
+export type Invite = {
+  inviter: User;
+  date: string;
+  time: string;
+  location: string;
+}
