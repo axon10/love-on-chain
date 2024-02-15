@@ -26,10 +26,10 @@ describe("smart contract", function () {
     for (var signer of all_signers) {
       setBalance(signer.address, 10 ** 20);
     }
-    return {owner, anika, ana, gautham, escrow};
+    return {owner, anika, ana, gautham, escrow, staker};
   }
   it("Happy path", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = await escrow
@@ -50,13 +50,45 @@ describe("smart contract", function () {
       ana.address
     );
     await expect(finish_attendance).to.emit(escrow, "AttendanceConfirmed");
-    await expect(finish_attendance).to.changeEtherBalance(escrow, 600);
+    await expect(finish_attendance).to.changeEtherBalance(escrow, 200);
+    await expect(finish_attendance).to.changeEtherBalance(anika, 100);
+    await expect(finish_attendance).to.changeEtherBalance(ana, 100);
+  });
+
+  it("Money printer works", async function () {
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
+    await escrow.initDate("anika-ana", anika.address, ana.address);
+
+    const anika_stake = await escrow
+      .connect(anika)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(anika_stake).to.emit(escrow, "StakeMade");
+    await expect(anika_stake).to.changeEtherBalance(anika, -100);
+    await expect(anika_stake).to.changeEtherBalance(escrow, 0);
+    await expect(anika_stake).to.changeEtherBalance(staker, 100);
+
+    const ana_stake = await escrow
+      .connect(ana)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(ana_stake).to.emit(escrow, "StakeMade");
+    await expect(ana_stake).to.changeEtherBalance(ana, -100);
+    await expect(ana_stake).to.changeEtherBalance(escrow, 0);
+    await expect(ana_stake).to.changeEtherBalance(staker, 100);
+
+    await escrow.confirmAttendanceInt("anika-ana", anika.address);
+    const finish_attendance = escrow.confirmAttendanceInt(
+      "anika-ana",
+      ana.address
+    );
+    await expect(finish_attendance).to.emit(escrow, "AttendanceConfirmed");
+    await expect(finish_attendance).to.changeEtherBalance(staker, -400);
+    await expect(finish_attendance).to.changeEtherBalance(escrow, 200);
     await expect(finish_attendance).to.changeEtherBalance(anika, 100);
     await expect(finish_attendance).to.changeEtherBalance(ana, 100);
   });
 
   it("Try to stake from different address should fail", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = await escrow
@@ -72,7 +104,7 @@ describe("smart contract", function () {
   });
 
   it("Try to stake twice should fail", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = await escrow
@@ -88,7 +120,7 @@ describe("smart contract", function () {
   });
 
   it("Try to stake with less than min amount should fail", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = escrow
@@ -98,7 +130,7 @@ describe("smart contract", function () {
   });
 
   it("Try to confirm without staking should fail", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = await escrow
@@ -117,7 +149,7 @@ describe("smart contract", function () {
 
 
   it("Try to confirm from different address should fail", async function () {
-    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    const {owner, anika, ana, gautham, escrow, staker} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
     const anika_stake = await escrow

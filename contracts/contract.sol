@@ -60,7 +60,7 @@ contract DateVerificationEscrow {
             require(curr_date.participant2Staked == false, "Stake already made");
             curr_date.participant2Staked = true;
         }
-        staker.stake{value: 2 * stakeAmount}();
+        staker.stake{value: stakeAmount}();
         emit StakeMade(msg.sender, stakeAmount); // Log the staking event
     }
 
