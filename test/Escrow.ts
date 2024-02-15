@@ -55,7 +55,7 @@ describe("smart contract", function () {
     await expect(finish_attendance).to.changeEtherBalance(ana, 100);
   });
 
-  it("Try to stake from different address", async function () {
+  it("Try to stake from different address should fail", async function () {
     const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
@@ -71,7 +71,33 @@ describe("smart contract", function () {
     await expect(ana_stake).to.be.revertedWith("Not a participant");
   });
 
-  it("Try to confirm without staking", async function () {
+  it("Try to stake twice should fail", async function () {
+    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    await escrow.initDate("anika-ana", anika.address, ana.address);
+
+    const anika_stake = await escrow
+      .connect(anika)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(anika_stake).to.emit(escrow, "StakeMade");
+    await expect(anika_stake).to.changeEtherBalance(anika, -100);
+
+    const anika_stake_two = escrow
+      .connect(anika)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(anika_stake_two).to.be.revertedWith("Stake already made");
+  });
+
+  it("Try to stake with less than min amount should fail", async function () {
+    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    await escrow.initDate("anika-ana", anika.address, ana.address);
+
+    const anika_stake = escrow
+      .connect(anika)
+      .stake("anika-ana", { value: parseUnits("1", "wei") });
+    await expect(anika_stake).to.be.revertedWith("Not enough stake amount");
+  });
+
+  it("Try to confirm without staking should fail", async function () {
     const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
     await escrow.initDate("anika-ana", anika.address, ana.address);
 
@@ -87,5 +113,30 @@ describe("smart contract", function () {
       ana.address
     );
     await expect(finish_attendance).to.be.revertedWith("Stake not already made");
+  });
+
+
+  it("Try to confirm from different address should fail", async function () {
+    const {owner, anika, ana, gautham, escrow} = await loadFixture(deploy);
+    await escrow.initDate("anika-ana", anika.address, ana.address);
+
+    const anika_stake = await escrow
+      .connect(anika)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(anika_stake).to.emit(escrow, "StakeMade");
+    await expect(anika_stake).to.changeEtherBalance(anika, -100);
+
+    const ana_stake = await escrow
+      .connect(ana)
+      .stake("anika-ana", { value: parseUnits("100", "wei") });
+    await expect(ana_stake).to.emit(escrow, "StakeMade");
+    await expect(ana_stake).to.changeEtherBalance(ana, -100);
+
+    await escrow.confirmAttendanceInt("anika-ana", anika.address);
+    const finish_attendance = escrow.confirmAttendanceInt(
+      "anika-ana",
+      gautham.address
+    );
+    await expect(finish_attendance).to.be.revertedWith("Not a participant");
   });
 });
