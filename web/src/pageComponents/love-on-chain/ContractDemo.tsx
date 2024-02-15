@@ -1,8 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { clsx } from 'clsx';
-import { MATCHES } from '../../mocks/userMocks';
+import { INVITES } from '../../mocks/userMocks';
+import { Invite } from '../../types';
 import MatchProfile from '../love-on-chain/MatchProfile';
 import Profile from '../love-on-chain/Profile';
+import DateConfirmation from './DateConfirmation';
 
 export enum TransactionSteps {
   START_TRANSACTION_STEP,
@@ -11,31 +13,44 @@ export enum TransactionSteps {
 }
 
 export default function LoveOnChainContractDemo() {
-
-  const [selectedMatch, setSelectedMatch] = useState('Mr. Right');
+  const [selectedInvite, setSelectedInvite] = useState<Invite>();
   
-  const onSelectMatch = useCallback((matchName: string) => {
-    setSelectedMatch(matchName);
-  }, [setSelectedMatch])
+  const onSelectMatch = useCallback((invite: Invite) => {
+    setSelectedInvite(invite);
+    
+  }, [setSelectedInvite])
 
-  const dateDetails = useMemo(() => {
+  useEffect(() =>{
+   console.log(selectedInvite);
+  });
+
+  const matches = useMemo(() => {
     return (
       <div className='flex flex-col gap-1'>
-        {MATCHES.map((user) => (
-            <MatchProfile key={user.userName} userName={user.userName} bio={user.bio} avatar={user.avatar} selected={selectedMatch === user.userName} clickHandler={onSelectMatch}/>
+        {INVITES.map((invite) => (
+            <MatchProfile key={invite.inviter.userName} invite={invite} selected={selectedInvite === invite} clickHandler={onSelectMatch}/>
         )) 
         }
       </div>
     );
-  }, [selectedMatch, onSelectMatch]);
+  }, [selectedInvite, onSelectMatch]);
+
+  const confirmDate = useCallback(() => {
+    console.log('Confirm date');
+  }, [])
 
   return (
     <div>
       <Profile/>
-      <section>
-        <h3 className="text-xl font-bold">My matches</h3>
-          {dateDetails}
-      </section>
+      <div className='flex flex-row gap-10'>
+      
+      <aside className='bg-white p-3 rounded-xl'>
+      {selectedInvite ? <DateConfirmation dateInvite={selectedInvite} confirmationHandler={confirmDate}/> : <section>
+        <h3 className="text-xl font-bold">My invites</h3>
+          {matches}
+      </section>}
+      </aside>
+      </div>
     </div>
   );
 }

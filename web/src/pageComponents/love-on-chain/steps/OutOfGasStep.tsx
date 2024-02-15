@@ -3,12 +3,12 @@ import Button from '../../../components/Button/Button';
 import { TransactionSteps } from '../ContractDemo';
 
 type OutOfGasStepProps = {
-  buyCoffeeAmountRaw: number;
+  min_stake: number;
   setTransactionStep: React.Dispatch<React.SetStateAction<TransactionSteps | null>>;
 };
 
 export default function OutOfGasStep({
-  buyCoffeeAmountRaw,
+  min_stake,
   setTransactionStep,
 }: OutOfGasStepProps) {
   const handleGotIt = useCallback(() => {
@@ -24,8 +24,7 @@ export default function OutOfGasStep({
       <div className="text-center text-6xl">⛽</div>
 
       <div className="my-4 text-center text-sm text-gray-400">
-        Please fund your wallet with at least {String(buyCoffeeAmountRaw)} ETH and try sending a
-        coffee again.
+        Please fund your wallet with at least {String(min_stake)} ω and try committing to the date again.
       </div>
 
       <Button buttonContent="Got it" onClick={handleGotIt} />
