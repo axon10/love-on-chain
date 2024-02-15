@@ -20,7 +20,7 @@ type FormCommitToDateProps = {
   transactionStep: TransactionSteps | null;
 };
 
-const MIN_STAKE = 100;
+const MIN_STAKE = 0.00001;
 
 function FormCommitToDate({
   setTransactionStep,
@@ -35,7 +35,7 @@ function FormCommitToDate({
   const contract = useLoveOnChainContract();
 
   // Calculate if the user can afford to buy coffee
-  const canAfford = useLoggedInUserCanAfford(parseEther(String(MIN_STAKE / 10**18)));
+  const canAfford = useLoggedInUserCanAfford(parseEther(String(MIN_STAKE)));
 
   const handleOncomplete = useCallback(async () => {
     // TODO: handle form submission
@@ -51,7 +51,7 @@ function FormCommitToDate({
     query: {
       enabled: contract.status === 'ready',
     },
-    value: parseEther(String(MIN_STAKE / 10**18)),
+    value: parseEther(String(MIN_STAKE)),
   });
 
   const {
@@ -116,7 +116,7 @@ function FormCommitToDate({
   const submitButtonContent = useMemo(() => {
     return (
       <>
-        Stake {stake} ω to commit to the date!
+        Stake {stake} ETH to commit to the date!
       </>
     );
   }, [stake]);
@@ -128,7 +128,7 @@ function FormCommitToDate({
 
     if (!canAfford) {
       return (
-        <>You must have at least {String(MIN_STAKE)} ω in your wallet to continue.</>
+        <>You must have at least {String(MIN_STAKE)} ETH in your wallet to continue.</>
       );
     }
 

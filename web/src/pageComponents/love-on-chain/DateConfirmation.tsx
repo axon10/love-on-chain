@@ -1,12 +1,21 @@
+import { useState } from 'react';
 import Image from 'next/image';
+import { CURR_USER } from '../../mocks/userMocks';
 import {Invite} from '../../types'
+import CommitToDateFormStep from './steps/LoveOnChainFormStep/CommitToDateStep';
+
 type DateConfirmationProps = {
     dateInvite: Invite;
-    confirmationHandler: () => void;
 }
 
-export default function DateConfirmation({dateInvite, confirmationHandler}: DateConfirmationProps) {
+export enum TransactionSteps {
+    START_TRANSACTION_STEP,
+    TRANSACTION_COMPLETE_STEP,
+    OUT_OF_GAS_STEP,
+  }
 
+export default function DateConfirmation({dateInvite}: DateConfirmationProps) {
+    const [transactionStep, setTransactionStep] = useState<TransactionSteps | null>(null);
     return (
         <div className='flex flex-col justify-center gap-2'>
             <div className='flex flex-row gap-2'>
@@ -19,7 +28,13 @@ export default function DateConfirmation({dateInvite, confirmationHandler}: Date
                 <p>Time: {dateInvite.time}</p>
                 <p>Time: {dateInvite.location}</p>
             </div>
-            <button type="button" onClick={confirmationHandler} className='bg-pink-100 max-w-max p-2 m-auto mt-2 rounded-xl'>Accept date</button>
+            <CommitToDateFormStep
+            dateId={dateInvite.inviter.userName + "-" + CURR_USER.userName}
+            stake={0.00001}
+            transactionStep={transactionStep}
+            setTransactionStep={setTransactionStep}
+            />
+
         </div>
     );
 

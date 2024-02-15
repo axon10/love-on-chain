@@ -1,4 +1,11 @@
+import Avatar from './Avatar.svg';
 import MatchAvatar from './MrRight.svg';
+
+export const CURR_USER = {
+    avatar: Avatar,
+    userName: 'Pengu',
+        bio: 'I am looking for Mr. Right!',
+}
 
 
 export const INVITES = [

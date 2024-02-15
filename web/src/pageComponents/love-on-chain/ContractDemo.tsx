@@ -34,22 +34,17 @@ export default function LoveOnChainContractDemo() {
       </div>
     );
   }, [selectedInvite, onSelectMatch]);
-
-  const confirmDate = useCallback(() => {
-    console.log('Confirm date');
-  }, [])
-
+  
   return (
     <div>
       <Profile/>
       <div className='flex flex-row gap-10'>
-      
-      <aside className='bg-white p-3 rounded-xl'>
-      {selectedInvite ? <DateConfirmation dateInvite={selectedInvite} confirmationHandler={confirmDate}/> : <section>
-        <h3 className="text-xl font-bold">My invites</h3>
-          {matches}
-      </section>}
-      </aside>
+        <aside className='bg-white p-3 rounded-xl'>
+        {selectedInvite ? <DateConfirmation dateInvite={selectedInvite}/> : <section>
+          <h3 className="text-xl font-bold">My invites</h3>
+            {matches}
+        </section>}
+        </aside>
       </div>
     </div>
   );
